@@ -1,1 +1,32 @@
-Checklist
+**PAGES**
+- Landing Page
+  - Product sub-pages
+  - Mission
+  - What's New
+
+- Dedicated Login Page
+
+- User Profile (mode for both my profile and others)
+
+- Make Post Page
+
+- Edit Profile (Separate Page?)
+
+- Home Page (shows other's recent posts, etc.)
+
+- Messaging Page
+
+
+**OTHER**
+- 3 function utility files (1 ea. person)
+    Functions to do:
+      Ben
+    
+      Saleha
+    
+      Connor
+
+- maybe "communicator" file between the 3 utils and the site
+
+
+- css Style page
