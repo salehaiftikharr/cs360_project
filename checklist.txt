@@ -5,8 +5,16 @@
   - What's New
 
 - Dedicated Login Page
+  - Form to submit username and password
+  - Session log in functionality
+  - Sign up form
+    - make sure to check for repeat emails/usernames/etc.
 
 - User Profile (mode for both my profile and others)
+  - get user data (profile, bio, etc.) and add to website
+  - post feed (COPY PASTE FOR HOME PAGE)
+  - 
+
 
 - Make Post Page
 
