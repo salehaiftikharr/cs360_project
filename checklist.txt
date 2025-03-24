@@ -1,8 +1,7 @@
 **PAGES**
-- Landing Page
-  - Product sub-pages
-  - Mission
-  - What's New
+- Landing Page Home [SALEHA]
+
+- What's New [SALEHA]
 
 - Dedicated Login Page [CONNOR]
   - Form to submit username and password
@@ -23,7 +22,7 @@
   - forms to change profile text
   - autofill with current data
 
-- Home Page (shows other's recent posts, etc.)
+- Home Page (shows other's recent posts, etc.) [CONNOR/BEN]
   - copy from user profile
   - followed/unfollowed posts toggle
 
@@ -39,7 +38,7 @@
     
       Connor
 
-- maybe "communicator" file between the 3 utils and the site
+- maybe "communicator" file between the 3 utils and the site [time permitting]
 
 
-- css Style page
+- css Style page [EVERYONE]
