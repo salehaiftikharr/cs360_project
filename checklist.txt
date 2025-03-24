@@ -4,26 +4,31 @@
   - Mission
   - What's New
 
-- Dedicated Login Page
+- Dedicated Login Page [CONNOR]
   - Form to submit username and password
   - Session log in functionality
   - Sign up form
     - make sure to check for repeat emails/usernames/etc.
 
-- User Profile (mode for both my profile and others)
+- User Profile (mode for both my profile and others) [BEN]
   - get user data (profile, bio, etc.) and add to website
   - post feed (COPY PASTE FOR HOME PAGE)
-  - 
+  -
 
+- Make Post Page [SALEHA]
+  - input data and pictures into form
+  - save to db
 
-- Make Post Page
-
-- Edit Profile (Separate Page?)
+- Edit Profile (Separate Page?) [BEN]
+  - forms to change profile text
+  - autofill with current data
 
 - Home Page (shows other's recent posts, etc.)
+  - copy from user profile
+  - followed/unfollowed posts toggle
 
-- Messaging Page
-
+- Messaging Page [SALEHA]
+  - similar to titans messaging stuff (but on one page)
 
 **OTHER**
 - 3 function utility files (1 ea. person)
