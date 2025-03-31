@@ -31,7 +31,7 @@ session_start();
         <p>Join your friends and build a community centered around health, fitness and self-improvement.</p>
         <br>
         <div class ="main-pic">
-        <img src="img/lifting_class.png">
+        <img src="cs360_project/img/lifting_class.png">
         </div>
     </div>
 
@@ -41,14 +41,14 @@ session_start();
         <div class="features">
             <div class="fcontainer">
                 <div class="gallery">
-                    <img src="img/spotting.png">                 
+                    <img src="cs360_project/img/spotting.png">                 
                 </div>
                 <div class="gallery">
-                    <img src="img/measure.png">
+                    <img src="cs360_project/img/measure.png">
                  
                 </div>
                 <div class="gallery">
-                    <img src="img/coach.png">
+                    <img src="cs360_project/img/coach.png">
                 </div>
                 <div>
                     <h6>Connect With Friends</h6>
