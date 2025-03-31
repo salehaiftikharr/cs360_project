@@ -47,7 +47,7 @@ session_start();
                 <div class="gallery">
                     <img src="../img/coach.png">
                 </div>
-                <div>
+                <div>Post
                     <h6>Connect With Friends</h6>
                     <p>Fuerza allows you to share and track workouts with your favorite people, as well as find others on a similar journey.</p>
                 </div>
