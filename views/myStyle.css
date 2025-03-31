@@ -1,57 +1,110 @@
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #f0f0f0;
+            background-color: #1c1c1c;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #1c1c1c;
+            border-bottom: 1px solid #444;
+            padding: 20px;
+        }
+        .navbar-brand {
+            color: #f0f0f0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #f0f0f0;
+            margin-right: 20px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ccc;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            text-align: left;
+            padding: 100px 20px;
+        }
+        .main-pic {
+            display: flex;
+            flex-direction: column;
+            margin-left: auto;
+            margin-right: auto;
+            width:100%;
+            height:auto; 
+            padding: 100px 20px;
+        }
+        .profile-img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .intro h1 {
+            font-size: 36px;
+            margin: 10px 0;
+        }
+        .intro p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .social-icons {
+            margin-top: 20px;
+        }
+        .social-icons a {
+            color: #f0f0f0;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+        }
+        .social-icons a:hover {
+            color: #007bff;
+        }
+        footer {
+            background-color: #1c1c1c;
+            color: #ccc;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .fcontainer {
+            display:   grid;
+            grid-template-columns: auto auto auto;
+            padding: 10px 50px;
+        }
+        .fcontainer > div{
+            padding: 10px;
+            width: 600px;
+            height: 600px;
+        }
+        .gallery img{
+            width: 500px;
+            height: 500px;
+            object-fit: cover; 
+        }
 
-.main {
-    margin-top:       20px;
-    padding:          10px;
-    border:           dotted 2px blue;
-}
-
-.menuItem {
-    border:           solid 2px green; 
-    border-radius:    5px;
-    text-align:       center; 
-    font-size:        20px; 
-    background-color: orange; 
-    color:            blue;
-}
-
-.menuItem:hover {
-    background-color: blue; 
-    color:            orange;
-}
-
-.debug {
-	border:		  dashed 1px gray;
-	border-radius:    10% 30% 50% 70%;
-	border-width:     2px 4px;
-	background-color: #dedede;
-}
-
-.msgcontent{
-	border:		dashed 1px gray;
-	max-width:	300px;
-	display: 	none;
-	word-wrap: 	break-word;
-
-}
-
-.sender{
-	border:		dashed 1px orange;
-	width:		400px;
-	text-align: 	left;
-	word-wrap: 	break-word;
-
-}
-
-.reciever{
-	border:		dashed 1px blue;
-	width:		400px;
-	text-align: 	right;
-	word-wrap: 	break-word;
-	margin-left: 	auto;
-}
-
-.scrolltainer{
-	height:		500px;
-	overflow:	auto;
-}
-
+    </style>
