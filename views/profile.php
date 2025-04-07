@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include("../utilCASIBE01.php");
+include("../whitco_util.php");
 ?>
 
 <!DOCTYPE html>
