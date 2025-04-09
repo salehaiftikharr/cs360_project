@@ -1,5 +1,5 @@
         body {
-            font-family: Arial, sans-serif;
+            font-family: Lato;
             color: #f0f0f0;
             background-color: #1c1c1c;
             margin: 0;
@@ -109,7 +109,8 @@
         }
         .fcontainer > div{
             padding: 10px;
-            width: 600px;
+            width: 600px;<div class="features">
+            <div class="fcontainer">
             height: 600px;
         }
         .gallery img{
@@ -119,9 +120,44 @@
         }
         
 	.pfp-image{
-	  width: 200px;
-	  height: 200px;
-	  border-radius: 50%;
-	  margin-left: 10%;
+	  	width: 200px;
+	  	height: 200px;
+	  	display: inline-block;
+	  	border-radius: 50%;
+	  	margin-left: 10%;
 
+	}
+	
+	.profileDiv{
+		text-align: left;
+		margin-left: 2%;
+  		vertical-align: top;
+  		margin-top: 1%;
+		display: inline-block;
+		word-wrap: break-word;
+	}
+	
+	.scrolltainer{
+		height:		500px;
+		overflow:	auto;
+		border-style: ridge;
+		border-width: 	5px;
+		border-color: 	white;
+		padding:	10px;
+	}
+	
+	.horizontalscroll{
+		height:		200px;
+		overflow-x:	auto;
+		overflow-y:	hidden;
+		border-style: 	ridge;
+		border-width: 	5px;
+		border-color: 	white;
+		padding:	10px;
+	}
+	
+	.posttable{
+		padding-left:	20px;
+		padding-right:	20px;
+		padding-top:	5%;
 	}
