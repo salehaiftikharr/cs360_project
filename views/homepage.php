@@ -1,5 +1,8 @@
 <?php
 session_start();
+include_once("../whitco_util.php"); 
+include_once("../casibe_util.php"); 
+include("./bootstrap.php");
 
 var_dump($_SESSION);
 
@@ -13,9 +16,11 @@ if(!$_SESSION["valid"]){
 <html>
     <head>
         <title>Fuerza Home</title>
-        <h1>Welcome Connor</h1>
     </head>
     
     <body>
+    <?php genHeader(); ?>
+    <h1>Welcome Connor</h1>
+    
     </body>
 </html>
