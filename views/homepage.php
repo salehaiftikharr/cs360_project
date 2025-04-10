@@ -16,13 +16,13 @@ if(!$_SESSION["valid"]){
 <html>
     <head>
         <title>Fuerza Home</title>
+        <h1>Welcome <?php echo $_SESSION["uname"]; ?></h1>
     </head>
     
     <body>
     <?php genHeader(); 
     genPosts();
     ?>
-    <h1>Welcome Connor</h1>
     
     </body>
 </html>
