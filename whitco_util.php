@@ -22,6 +22,28 @@ function genLoginForm() {
     <?php
 }
 
+function genPosts($db){
+    
+    $uid = $_SESSION['uid'];
+    
+    $query = "SELECT caption
+                FROM User u JOIN Follows f ON follower_uid = u.uid
+                JOIN Post p ON p.uid = following_uid
+                WHERE u.uid = $uid
+                ORDER BY p.date";
+
+    $res = $db->query($query);
+    if($res->rowCount() > 0){
+        while($row = $res->fetch()){
+            $caption = $row['caption'];
+            echo "<p>$caption</p>\n";
+        }
+    }
+    else{
+        echo "No Posts!";
+    }
+}
+
 function genSignupForm() {
     ?>
     <FORM name='fmSignup' method='POST' action='signup.php?signup'>
