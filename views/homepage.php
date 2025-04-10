@@ -19,7 +19,9 @@ if(!$_SESSION["valid"]){
     </head>
     
     <body>
-    <?php genHeader(); ?>
+    <?php genHeader(); 
+    genPosts();
+    ?>
     <h1>Welcome Connor</h1>
     
     </body>
