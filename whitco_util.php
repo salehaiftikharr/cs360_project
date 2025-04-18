@@ -22,7 +22,7 @@ function genLoginForm() {
     <?php
 }
 
-function genPosts($db){
+function genHomepagePosts($db){
     
     $uid = $_SESSION['uid'];
     
@@ -36,13 +36,99 @@ function genPosts($db){
     if($res->rowCount() > 0){
         while($row = $res->fetch()){
             $caption = $row['caption'];
-            echo "<p>$caption</p>\n";
+            echo "<p><style>p {text-align:center}</style>$caption</p>\n";
         }
     }
     else{
         echo "No Posts!";
     }
 }
+
+function genSearchBar(){
+    ?>
+    <FORM name='userSearch' method='POST' action = 'homepage.php?search'>
+    <label for="searchBy">Search By:</label>
+        <select name="searchBy" id="searchOptions">
+        <option value="Username">Username</option>
+        <option value="Name">Name</option>
+        <option value="Gym">Gym</option>
+        </select>
+        <INPUT type='text' name='searchTerm' id='searchTerm' size = 5 />
+    <INPUT type='submit' value='search'/>
+    </FORM>
+    <?php
+}
+
+function processSearch($db, $formData){
+    $category = $formData['searchBy'];
+    switch ($category) {
+        case 'Username':
+            searchOnUsername($db, $formData);
+            break;
+        case 'Gym':
+            searchOnGym($db, $formData);
+            break;
+        case 'Name':
+            searchOnLegalName($db, $formData);
+            break;
+    }
+}
+
+function searchOnUsername($db, $formData){
+    $username = $formData['searchTerm'];
+        $query = "SELECT username 
+                    FROM User 
+                        WHERE username LIKE '$username%'";
+        //echo "<p>$query</p><br>";
+        $res = $db->query($query);
+        if($res->rowCount() < 1){
+            echo "No results found";
+        }
+        else{
+            while($row = $res->fetch()){
+                $username = $row['username'];
+                echo "<p>$username</p><br>";
+            }
+        }
+}
+
+function searchOnGym($db, $formData){
+    $gymName = $formData['searchTerm'];
+        $query = "SELECT username FROM User u 
+                    JOIN MemberOf m ON u.uid = m.uid 
+                        WHERE gym_name = '$gymName'";
+        //echo $query;
+        $res = $db->query($query);
+        if($res->rowCount() < 1){
+            echo "No results found";
+        }
+        else{
+            while($row = $res->fetch()){
+                $username = $row['username'];
+                echo "<p>$username</p><br>";
+            }
+        }
+}
+
+function searchOnLegalName($db, $formData){
+    $name = $formData['searchTerm'];
+        $query = "SELECT u.username, u.name, gym_name
+                    FROM User AS u
+                        JOIN MemberOf AS mo ON u.uid = mo.uid
+                            WHERE u.name LIKE '$name%'";
+        echo $query;
+        $res = $db->query($query);
+        if($res->rowCount() < 1){
+            echo "No results found";
+        }
+        else{
+            while($row = $res->fetch()){
+                $username = $row['username'];
+                echo "<p>$username</p><br>";
+            }
+        }
+}
+
 
 function genSignupForm() {
     ?>
@@ -80,10 +166,12 @@ function processLogin($db, $formData) {
                 FROM User   
                 WHERE username='$username' AND password='$password'";
     
+    echo $query;
+
     $res = $db->query($query);
 
     if ($res == false || $res->rowCount() != 1) {
-        header("refresh:2;url=login.php?login");
+        //header("refresh:2;url=login.php?login");
         print "<P>Login as $username failed</P>\n";    
     }
     else {
@@ -92,9 +180,6 @@ function processLogin($db, $formData) {
         $_SESSION['uid'] = $row['uid'];
         $_SESSION['uname'] = $username;
         $_SESSION["valid"] = true;
-        ?>
-        <p>Successfully logged in as <?php echo($username) ?> User with UID: <?php echo($row['uid']) ?> </p>
-        <?php
         $homepage = 'homepage.php';
         header('Location: '. $homepage);
     }
