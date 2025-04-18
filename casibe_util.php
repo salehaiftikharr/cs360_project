@@ -9,9 +9,9 @@ function genHeader(){
 		<div class="container">
 		<a class="navbar-brand" href="homepage.php">Fuerza</a>
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="homepage.php">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="profile.php">My Profile</a></li> <!-- eventually set up for the link to contain the username of the profile data to use -->
+					<li class="nav-item"><a class="nav-link" href="profile.php">My Profile</a></li>
 					<li class="nav-item"><a class="nav-link" href="messages.php">Messages</a></li>
 					<li class="nav-item"><a class="nav-link" href="newpost.php">New Post</a></li>
 				</ul>
@@ -71,15 +71,14 @@ function genPosts($db, $uid){
 
 		?><div class='scrolltainer'>
 		<?php
+		$str = "SELECT pid FROM Post WHERE uid = $uid";
+		$res = $db->query($str);
 		
-		genPost($db, 1);
-		genPost($db, 1);
-		genPost($db, 1);
-		genPost($db, 1);
-		
+		while($row = $res->fetch()){
+			genPost($db, $row['pid']);
+		}
 		?>
 		</div>
 <?php
 }
 ?>
-
