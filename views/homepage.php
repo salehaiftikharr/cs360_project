@@ -18,25 +18,31 @@ include_once("../bootstrap.php");
 <html>
     <head>
         <title>Fuerza Home</title>
-        <h1>
-            <style>h1 {text-align: center;}</style>
-            Welcome <?php echo $_SESSION["uname"]; ?>
-        </h1>
     </head>
     
     <body>
-        <?php
-            //genHeader();
-            genSearchBar();
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                //var_dump($_SERVER);
-                if($_SERVER["QUERY_STRING"] == 'search'){
-                    //var_dump($_POST);
-                    processSearch($db, $_POST);
-                }
-            } 
-            genHomepagePosts($db);
-            //genFooter();
-        ?>
+
+        <?php genHeader(); ?>
+
+	    <div class="main-content">
+
+            <h1>
+                <style>h1 {text-align: center;}</style>
+                Welcome <?php echo $_SESSION["uname"]; ?>
+            </h1>
+            
+            <?php
+                genSearchBar();
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    //var_dump($_SERVER);
+                    if($_SERVER["QUERY_STRING"] == 'search'){
+                        //var_dump($_POST);
+                        processSearch($db, $_POST);
+                    }
+                } 
+                genHomepagePosts($db);
+                genFooter();
+            ?>
+        </div>
     </body>
 </html>
