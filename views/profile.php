@@ -1,21 +1,34 @@
 <?php 
 session_start();
+//var_dump($_SESSION);
 include_once("../whitco_util.php"); 
 include_once("../casibe_util.php"); 
-var_dump($_SESSION);
+
+
+if(!$_SESSION["valid"]){
+    header("Location:" . "login.php");
+}
+
+if(isset($_GET['account'])){
+	$account = $_GET['account'];
+}
+else{
+    header("Location:" . "profile.php?account=" . $_SESSION['uname']);
+}
+
 ?>
 
 <!DOCTYPE html>
 <HTML>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <title> Profile Page </title>
 <?php
-	$uid = $_SESSION['uid'];
-	$pid = $uid; //PROFILE ID!!! Have link specific what user the profile is on!!!!
 	include("./bootstrap.php");
+	$uid = $_SESSION['uid'];
+	$str = "SELECT uid FROM User WHERE username = '$account'";
+	$pid = $db->query($str)->fetch()['uid']; // PROFILE ID!!!
+
 ?>
     
 </head>
@@ -39,7 +52,7 @@ var_dump($_SESSION);
 		?>
 		<DIV class="col-4 menuItem"><A href="?menu=follow">Follow</A></DIV>
 		</div>
-		<?php genPosts($db, $uid);
+		<?php genPosts($db, $pid);
 		?>
 	</div>
 
