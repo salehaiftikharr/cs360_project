@@ -1,17 +1,18 @@
 <?php
-// Shows errors during development
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../db_connect.php");
-include_once("../whitco_util.php");
-include_once("../casibe_util.php");
-include("bootstrap.php");
+@include_once("../whitco_util.php");
+@include_once("../casibe_util.php");
+@include("./bootstrap.php");
 
 if (!isset($_SESSION["valid"]) || $_SESSION["valid"] !== true) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -19,63 +20,100 @@ $uid = $_SESSION['uid'];
 $uname = $_SESSION['uname'];
 
 // === SEND MESSAGE HANDLER ===
-if (isset($_POST['send'])) {
-    $to_uid = $_POST['to_uid'];
-    $contents = addslashes($_POST['contents']);
+if (isset($_POST['send']) && isset($_GET['chat'])) {
+    $to_uid = $_GET['chat'];
+    $contents = trim($_POST['contents']);
     $now = date('Y-m-d H:i:s');
 
-    $query = "INSERT INTO Message (from_uid, to_uid, postTime, contents)
-              VALUES ($uid, $to_uid, '$now', '$contents')";
-    $res = $db->query($query);
-
-    if ($res) {
-        echo "<div class='alert alert-success'> Message sent!</div>";
-    } else {
-        echo "<div class='alert alert-danger'> Failed to send message.</div>";
+    if (!empty($contents)) {
+        $stmt = $db->prepare("INSERT INTO Message (from_uid, to_uid, postTime, contents)
+                              VALUES (:from_uid, :to_uid, :postTime, :contents)");
+        $stmt->execute([
+            ':from_uid' => $uid,
+            ':to_uid' => $to_uid,
+            ':postTime' => $now,
+            ':contents' => $contents
+        ]);
     }
+    header("Location: messages.php?chat=$to_uid");
+    exit;
 }
 
-// === INBOX ===
-function showInbox($db, $uid) {
-    echo "<h3>Inbox</h3>";
-    $query = "SELECT M.contents, M.postTime, U.name AS sender
-              FROM Message M
-              JOIN User U ON M.from_uid = U.uid
-              WHERE M.to_uid = $uid
-              ORDER BY M.postTime DESC";
-    $res = $db->query($query);
-
-    echo "<table class='table table-bordered table-striped'>
-            <thead><tr><th>Time</th><th>From</th><th>Message</th></tr></thead><tbody>";
-    while ($row = $res->fetch()) {
-        echo "<tr>
-                <td>{$row['postTime']}</td>
-                <td>{$row['sender']}</td>
-                <td>{$row['contents']}</td>
-              </tr>";
-    }
-    echo "</tbody></table><br>";
+function getUserName($db, $uid) {
+    $stmt = $db->prepare("SELECT name FROM User WHERE uid = :uid");
+    $stmt->execute([':uid' => $uid]);
+    $row = $stmt->fetch();
+    return $row ? $row['name'] : 'Unknown';
 }
 
-// === COMPOSE FORM ===
-function composeForm($db, $uid) {
-    $res = $db->query("SELECT uid, name FROM User WHERE uid != $uid");
+function showChat($db, $uid, $chatUid) {
+    $chatName = getUserName($db, $chatUid);
+    echo "<h3 class='text-info'>Chat with $chatName</h3>";
 
-    echo "<h3>Send a Message</h3>
-          <form method='POST' class='mb-4'>
-            <div class='mb-3'>
-                <label for='to_uid' class='form-label'>To:</label>
-                <select name='to_uid' class='form-select'>";
-    while ($row = $res->fetch()) {
-        echo "<option value='{$row['uid']}'>{$row['name']}</option>";
+    $query = "SELECT * FROM Message
+              WHERE (from_uid = :me AND to_uid = :them) OR (from_uid = :them AND to_uid = :me)
+              ORDER BY postTime ASC";
+    $stmt = $db->prepare($query);
+    $stmt->execute([':me' => $uid, ':them' => $chatUid]);
+
+    echo "<div class='chat-container'>";
+    while ($row = $stmt->fetch()) {
+        $bubbleClass = ($row['from_uid'] == $uid) ? 'from-me' : 'from-them';
+        echo "<div class='message-bubble $bubbleClass'>
+                {$row['contents']}<br>
+                <small>{$row['postTime']}</small>
+              </div>";
     }
-    echo "</select>
-            </div>
+    echo "</div><br>";
+
+    echo "<form method='POST'>
             <div class='mb-3'>
                 <label for='contents' class='form-label'>Message:</label>
-                <textarea name='contents' rows='4' class='form-control' placeholder='Type your message here'></textarea>
+                <textarea name='contents' rows='3' class='form-control' placeholder='Type your reply...'></textarea>
             </div>
-            <input type='submit' name='send' class='btn btn-primary' value='Send Message'>
+            <input type='submit' name='send' class='btn btn-primary' value='Send'>
+          </form>
+          <br><a href='messages.php' class='btn btn-secondary'>Back to Inbox</a>";
+}
+
+function showInboxList($db, $uid) {
+    echo "<h3 class='text-info'>Inbox</h3>";
+    $query = "SELECT DISTINCT U.uid, U.name
+              FROM User U
+              JOIN Message M ON (M.from_uid = U.uid OR M.to_uid = U.uid)
+              WHERE U.uid != :uid AND (M.from_uid = :uid OR M.to_uid = :uid)";
+    $stmt = $db->prepare($query);
+    $stmt->execute([':uid' => $uid]);
+
+    $existingConvos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo "<ul class='list-group'>";
+    foreach ($existingConvos as $row) {
+        $name = $row['name'];
+        $chatId = $row['uid'];
+        echo "<li class='list-group-item bg-dark border-secondary'>
+                <a href='messages.php?chat=$chatId' class='text-light'>$name</a>
+              </li>";
+    }
+    echo "</ul>";
+
+    // New Message Dropdown
+    echo "<h4 class='mt-4 text-info'>Start a New Conversation</h4>";
+    echo "<form method='GET' action='messages.php'>
+            <select name='chat' class='form-select'>";
+
+    $allUsers = $db->prepare("SELECT uid, name FROM User WHERE uid != :uid");
+    $allUsers->execute([':uid' => $uid]);
+    $existingIds = array_column($existingConvos, 'uid');
+
+    foreach ($allUsers as $user) {
+        if (!in_array($user['uid'], $existingIds)) {
+            echo "<option value='{$user['uid']}'>{$user['name']}</option>";
+        }
+    }
+
+    echo "</select>
+            <button type='submit' class='btn btn-primary mt-2'>Start Chat</button>
           </form>";
 }
 ?>
@@ -84,19 +122,52 @@ function composeForm($db, $uid) {
 <html>
 <head>
     <title>Fuerza Messages</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./myStyle.css" />
+    <style>
+        .message-bubble {
+            border-radius: 15px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            display: inline-block;
+            max-width: 70%;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 16px;
+        }
+        .from-them {
+            background-color: #343a40;
+            color: #f5f5f5;
+        }
+        .from-me {
+            background-color: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px;
+        }
+    </style>
 </head>
-<body>
-<?php genHeader(); ?>
+<body class="bg-dark text-light">
+<?php if (function_exists('genHeader') && isset($_SESSION['valid']) && $_SESSION['valid'] === true) genHeader(); ?>
 
-<div class="container mt-4">
-    <h2>Welcome to your Messages, <?php echo $uname; ?>!</h2>
+<div class="main-content">
+    <h2>Welcome to your Messages, <?php echo htmlspecialchars($uname); ?>!</h2>
     <?php
-        showInbox($db, $uid);
-        composeForm($db, $uid);
+        if (isset($_GET['chat'])) {
+            showChat($db, $uid, $_GET['chat']);
+        } else {
+            showInboxList($db, $uid);
+        }
     ?>
 </div>
 
-<?php genFooter(); ?>
+<?php if (function_exists('genFooter') && isset($_SESSION['valid']) && $_SESSION['valid'] === true) genFooter(); ?>
 </body>
 </html>
-
