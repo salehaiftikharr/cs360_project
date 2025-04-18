@@ -29,6 +29,8 @@
 - Messaging Page [SALEHA]
   - similar to titans messaging stuff (but on one page)
 
+- Create Post [Benjamin]
+
 **OTHER**
 - 3 function utility files (1 ea. person)
     Functions to do:
