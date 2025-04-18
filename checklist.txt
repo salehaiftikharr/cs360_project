@@ -14,9 +14,16 @@
   - post feed (COPY PASTE FOR HOME PAGE)
   -
 
-- Make Post Page [SALEHA]
+- Make Post Page [SALEHA/BEN]
   - input data and pictures into form
   - save to db
+
+  - BEN:
+      - Javascript for generating options to add more reps
+      - I'll also do the picture posting for the edit profile so that can be copy pasted for here
+
+  - SALEHA:
+      - HTML/PHP implementation
 
 - Edit Profile (Separate Page?) [BEN]
   - forms to change profile text
