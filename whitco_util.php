@@ -1,8 +1,10 @@
+<script src="toggleSearchView.js"></script>
+
 <?php
 
 session_start();
 
-include_once("../db_connect.php");
+include_once("casibe_util.php");
 
 //could do input validation if we want/have the time
 $regexUsername = "";
@@ -26,7 +28,7 @@ function genHomepagePosts($db){
     
     $uid = $_SESSION['uid'];
     
-    $query = "SELECT caption
+    $query = "SELECT pid
                 FROM User u JOIN Follows f ON follower_uid = u.uid
                 JOIN Post p ON p.uid = following_uid
                 WHERE u.uid = $uid
@@ -35,12 +37,13 @@ function genHomepagePosts($db){
     $res = $db->query($query);
     if($res->rowCount() > 0){
         while($row = $res->fetch()){
-            $caption = $row['caption'];
-            echo "<p><style>p {text-align:center}</style>$caption</p>\n";
+            // $caption = $row['caption'];
+            // echo "<p><style>p {text-align:center}</style>$caption</p>\n";
+            genPost($db, $row['pid']);
         }
     }
     else{
-        echo "No Posts!";
+        echo "<p><style>p {color:white} </style>No Posts!</p>";
     }
 }
 
@@ -54,7 +57,8 @@ function genSearchBar(){
         <option value="Gym">Gym</option>
         </select>
         <INPUT type='text' name='searchTerm' id='searchTerm' size = 5 />
-    <INPUT type='submit' value='search'/>
+        <?php print "<input type='submit' value='search' onclick='toggleSearchView('searchBox');' />";
+        ?>
     </FORM>
     <?php
 }
@@ -76,18 +80,21 @@ function processSearch($db, $formData){
 
 function searchOnUsername($db, $formData){
     $username = $formData['searchTerm'];
-        $query = "SELECT username 
-                    FROM User 
-                        WHERE username LIKE '$username%'";
-        //echo "<p>$query</p><br>";
+        $query = "SELECT u.username AS username, u.name AS name, gym_name AS gym
+                    FROM User AS u
+                        LEFT JOIN MemberOf AS m ON m.uid=u.uid
+                        WHERE u.username LIKE '$username%'";
+        
         $res = $db->query($query);
+        echo "<p>$query</p><br>";
         if($res->rowCount() < 1){
             echo "No results found";
         }
         else{
             while($row = $res->fetch()){
                 $username = $row['username'];
-                echo "<p>$username</p><br>";
+                $name = $row['name'];
+                $gym = $row['gym'];
             }
         }
 }
@@ -161,7 +168,7 @@ function processSignup() {
 function processLogin($db, $formData) {
     $username = $formData['username'];
     $password = $formData['password'];
-
+   
     $query = "SELECT uid 
                 FROM User   
                 WHERE username='$username' AND password='$password'";
@@ -169,6 +176,8 @@ function processLogin($db, $formData) {
     echo $query;
 
     $res = $db->query($query);
+
+    
 
     if ($res == false || $res->rowCount() != 1) {
         //header("refresh:2;url=login.php?login");
