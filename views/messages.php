@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include_once("../db_connect.php");
 @include_once("../whitco_util.php");
 @include_once("../casibe_util.php");
 @include("./bootstrap.php");
@@ -77,7 +76,40 @@ function showChat($db, $uid, $chatUid) {
 }
 
 function showInboxList($db, $uid) {
-    echo "<h3 class='text-info'>Inbox</h3>";
+    echo "<div class='card bg-secondary p-4 mb-3'>
+            <h4 class='text-light'>Start a New Conversation</h4>
+            <form method='GET' action='messages.php' class='d-flex gap-2'>
+                <input type='text' name='searchName' class='form-control' placeholder='Search by name...' required>
+                <button type='submit' class='btn btn-light'>Search</button>
+            </form>
+          </div>";
+
+    if (isset($_GET['searchName'])) {
+        $term = trim($_GET['searchName']);
+
+        $query = "SELECT uid, name FROM User WHERE name LIKE :term AND uid != :uid";
+        $stmt = $db->prepare($query);
+        $stmt->execute([
+            ':term' => $term . '%',
+            ':uid' => $uid
+        ]);
+
+        if ($stmt->rowCount() > 0) {
+            echo "<div class='card bg-dark p-3'><h5 class='text-info'>Search Results:</h5><ul class='list-group'>";
+            while ($row = $stmt->fetch()) {
+                $foundUid = $row['uid'];
+                $name = $row['name'];
+                echo "<li class='list-group-item bg-dark border-secondary'>
+                        <a href='messages.php?chat=$foundUid' class='text-light'>$name</a>
+                      </li>";
+            }
+            echo "</ul></div>";
+        } else {
+            echo "<p class='text-warning'>No users found with that name.</p>";
+        }
+    }
+
+    echo "<h3 class='text-info mt-4'>Inbox</h3>";
     $query = "SELECT DISTINCT U.uid, U.name
               FROM User U
               JOIN Message M ON (M.from_uid = U.uid OR M.to_uid = U.uid)
@@ -87,7 +119,7 @@ function showInboxList($db, $uid) {
 
     $existingConvos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    echo "<ul class='list-group'>";
+    echo "<ul class='list-group mb-4'>";
     foreach ($existingConvos as $row) {
         $name = $row['name'];
         $chatId = $row['uid'];
@@ -96,25 +128,6 @@ function showInboxList($db, $uid) {
               </li>";
     }
     echo "</ul>";
-
-    // New Message Dropdown
-    echo "<h4 class='mt-4 text-info'>Start a New Conversation</h4>";
-    echo "<form method='GET' action='messages.php'>
-            <select name='chat' class='form-select'>";
-
-    $allUsers = $db->prepare("SELECT uid, name FROM User WHERE uid != :uid");
-    $allUsers->execute([':uid' => $uid]);
-    $existingIds = array_column($existingConvos, 'uid');
-
-    foreach ($allUsers as $user) {
-        if (!in_array($user['uid'], $existingIds)) {
-            echo "<option value='{$user['uid']}'>{$user['name']}</option>";
-        }
-    }
-
-    echo "</select>
-            <button type='submit' class='btn btn-primary mt-2'>Start Chat</button>
-          </form>";
 }
 ?>
 
