@@ -46,7 +46,7 @@ function genPost($db, $pid){
 	print"<div class='horizontalscroll'>";
 	print"<table>";
 
-	$str = "SELECT reps, sets, weights, restTime, name FROM RepScheme NATURAL JOIN Exercise WHERE wid = (SELECT Workout.wid FROM Workout JOIN Post ON Workout.wid = Post.wid WHERE pid=$pid)";
+	$str = "SELECT reps, sets, weights, restTime, Exercise.name FROM RepScheme JOIN Exercise ON RepScheme.rid = Exercise.rid WHERE Exercise.wid = (SELECT Workout.wid FROM Workout JOIN Post ON Workout.wid = Post.wid WHERE pid=$pid)";
 	$res = $db->query($str);
 
 	while($row = $res->fetch()){
