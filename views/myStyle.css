@@ -1,164 +1,170 @@
-        body {
-            font-family: Lato;
-            color: #f0f0f0;
-            background-color: #1c1c1c;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            background-color: #1c1c1c;
-            border-bottom: 1px solid #444;
-            padding: 20px;
-        }
-        .navbar-brand {
-            color: #f0f0f0;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .navbar-nav .nav-link {
-            color: #f0f0f0;
-            margin-right: 20px;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #ccc;
-        }
-        .navbar-nav{
-            margin-left: auto; 
-	    margin-right: 0;
-        }
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: left;
-            text-align: left;
-            padding: 100px 120px;
-        }
-        .main-pic {
-            display: flex;
-            flex-direction: column;
-            margin-left: auto;
-            margin-right: auto;
-            width:75%;
-            height:auto; 
-            padding: 100px 20px;
-        }
-        .profile-img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        .intro h1 {
-            font-size: 36px;
-            margin: 10px 0;
-        }
-        .intro p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-        
-        h5 {
-        	text-align: center;
-        }
-        
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            color: white;
-            text-transform: uppercase;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .social-icons {
-            margin-top: 20px;
-        }
-        .social-icons a {
-            color: #f0f0f0;
-            margin: 0 10px;
-            font-size: 20px;
-            text-decoration: none;
-        }
-        .social-icons a:hover {
-            color: #007bff;
-        }
-        footer {
-            background-color: #1c1c1c;
-            color: #ccc;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-        footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        .fcontainer {
-            display:   grid;
-            grid-template-columns: auto auto auto;
-            padding: 10px 50px;
-        }
-        .fcontainer > div{
-            padding: 10px;
-            width: 600px;<div class="features">
-            <div class="fcontainer">
-            height: 600px;
-        }
-        .gallery img{
-            width: 500px;
-            height: 500px;
-            object-fit: cover; 
-        }
-        
-	.pfp-image{
-	  	width: 200px;
-	  	height: 200px;
-	  	display: inline-block;
-	  	border-radius: 50%;
-	  	margin-left: 10%;
+/* Global */
+body {
+	font-family: Lato, sans-serif;
+    	color: lightgray; 
+    	background-color: charcoal; 
+    	margin: 0;
+    	padding: 0;
+}
 
-	}
-	
-	.profileDiv{
-		text-align: left;
-		margin-left: 2%;
-  		vertical-align: top;
-  		margin-top: 1%;
-		display: inline-block;
-		word-wrap: break-word;
-	}
-	
-	.scrolltainer{
-		height:		500px;
-		overflow:	auto;
-		border-style: ridge;
-		border-width: 	5px;
-		border-color: 	white;
-		padding:	10px;
-	}
-	
-	.horizontalscroll{
-		height:		200px;
-		overflow-x:	auto;
-		overflow-y:	hidden;
-		border-style: 	ridge;
-		border-width: 	5px;
-		border-color: 	white;
-		padding:	10px;
-	}
-	
-	.posttable{
-		padding-left:	20px;
-		padding-right:	20px;
-		padding-top:	5%;
-	}
-	
-	.captionInput {
-    		margin-right: 75%;
-	}
+/* Navbar */
+.navbar {
+    	background-color: charcoal; 
+    	border-bottom: 1px solid slategray;
+    	padding: 20px;
+}
+
+.navbar-brand {
+    	color: lightgray; 
+    	font-size: 24px;
+    	font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    	color: lightgray; 
+    	margin-right: 20px;
+}	
+
+.navbar-nav .nav-link:hover {
+    	color: cornflowerblue; 
+}
+
+/* Page Layout */
+.main-content {
+    	display: flex;
+    	flex-direction: column;
+    	align-items: flex-start;
+    	text-align: left;
+    	padding: 100px 120px;
+}
+
+/* Footer */
+footer {
+    	background-color: charcoal; 
+    	color: lightgray; 
+    	text-align: center;
+    	padding: 10px 0;
+    	position: fixed;
+    	width: 100%;
+    	bottom: 0;
+}
+
+/* Post Section Styles */
+.scrolltainer {
+    	max-height: 500px;
+    	overflow-y: auto;
+    	padding: 20px;
+    	border: 1px solid slategray; 
+    	border-radius: 8px;
+    	background-color: white; 
+    	margin-top: 20px;
+}
+
+.post-card {
+    	background-color: dimgray; 
+    	border: 1px solid slategray;
+    	border-radius: 12px;
+    	padding: 15px 20px;
+    	margin-bottom: 20px;
+    	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Workout Tables */
+.horizontalscroll {
+    	overflow-x: auto;
+    	overflow-y: hidden;
+    	padding: 10px 0;
+    	margin-top: 10px;
+}
+
+.posttable {
+    	background-color: white;
+    	color: darkslategray;
+    	border-radius: 8px;
+    	padding: 12px;
+    	margin-right: 15px;
+    	min-width: 150px;
+    	text-align: left;
+    	font-size: 14px;
+    	border: 1px solid gray; 
+}
+
+.posttable th {
+    	text-align: center;
+    	font-size: 16px;
+    	margin-bottom: 5px;
+    	color: lightseagreen; 
+}
+
+/* Messaging */
+.message-bubble {
+    	border-radius: 15px;
+    	padding: 12px 16px;
+    	margin-bottom: 10px;
+    	display: inline-block;
+    	max-width: 70%;
+    	word-wrap: break-word;
+    	line-height: 1.4;
+    	font-size: 16px;
+}
+
+.from-them {
+    	background-color: purple; 
+    	color: lightgray; 
+}
+
+.from-me {
+    	background-color: royalblue; 
+    	color: white;
+    	margin-left: auto;
+}
+
+.chat-wrapper {
+    	display: flex;
+    	flex-direction: column;
+    	height: 65vh;
+    	max-height: 65vh;
+}
+
+.chat-container {
+    	flex-grow: 1;
+    	overflow-y: auto;
+    	display: flex;
+    	flex-direction: column;
+    	gap: 12px;
+    	padding: 10px;
+    	background-color: black; 
+    	border-radius: 10px;
+    	border: 1px solid gray; 
+}
+
+/* Form stays fixed at bottom of chat wrapper */
+.message-form {
+    	margin-top: auto;
+}
+
+/* Profile Section */
+.pfp-image {
+    	width: 150px;
+    	height: 150px;
+    	border-radius: 50%;
+    	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+    	margin-bottom: 20px;
+}
+
+.profileDiv {
+    	margin-left: 20px;
+    	display: inline-block;
+    	vertical-align: top;
+}
+
+/* Forms */
+.form-control, .form-select {
+    	background-color: dimgray; 
+    	color: lightgray; 
+    	border: 1px solid slategray; 
+}
+
+textarea.form-control {
+    	resize: vertical;
+}
