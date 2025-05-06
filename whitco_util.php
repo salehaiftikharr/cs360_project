@@ -10,6 +10,7 @@ include_once("casibe_util.php");
 $regexUsername = "";
 $regexEmail = "";
 $regexPassword = "";
+$nores = "No results found.";
 
 function genLoginForm() {
     ?>
@@ -47,9 +48,31 @@ function genHomepagePosts($db){
     }
 }
 
+function genExplorePage($db){
+    
+    $uid = $_SESSION['uid'];
+    
+    $query = "SELECT pid
+                FROM Post
+                ORDER BY date";
+
+    $res = $db->query($query);
+    if($res->rowCount() > 0){
+        while($row = $res->fetch()){
+            genPost($db, $row['pid']);
+        }
+    }
+    else{
+        echo "<p><style>p {color:white} </style>No Posts!</p>";
+    }
+}
+
 function genSearchBar(){
     ?>
-    <FORM name='userSearch' method='POST' action = 'homepage.php?search'>
+    <div class='searchBox' id='searchBox'>
+    <span id="close" class = "closeX" onclick="toggleSearchView('searchBox'); return false;">x</span>
+    </div>
+    <FORM name='userSearch' method='POST' action = 'homepage.php'>
     <label for="searchBy">Search By:</label>
         <select name="searchBy" id="searchOptions">
         <option value="Username">Username</option>
@@ -57,7 +80,7 @@ function genSearchBar(){
         <option value="Gym">Gym</option>
         </select>
         <INPUT type='text' name='searchTerm' id='searchTerm' size = 5 />
-        <?php print "<input type='submit' value='search' onclick='toggleSearchView('searchBox');' />";
+        <?php print "<input type='submit' value='search' onclick='toggleSearchView(\"searchBox\"); return false;'/>"; 
         ?>
     </FORM>
     <?php
@@ -79,22 +102,42 @@ function processSearch($db, $formData){
 }
 
 function searchOnUsername($db, $formData){
-    $username = $formData['searchTerm'];
+    $username = $formData['searchTerm'] . '%';
         $query = "SELECT u.username AS username, u.name AS name, gym_name AS gym
                     FROM User AS u
                         LEFT JOIN MemberOf AS m ON m.uid=u.uid
-                        WHERE u.username LIKE '$username%'";
+                        WHERE u.username LIKE :username";
+    
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->execute();
         
-        $res = $db->query($query);
-        echo "<p>$query</p><br>";
-        if($res->rowCount() < 1){
-            echo "No results found";
+        if($stmt->rowCount() < 1){
+            print "<p> No results found </p><br>";
         }
         else{
-            while($row = $res->fetch()){
+            while($row = $stmt->fetch()){
+                $index = 0;
                 $username = $row['username'];
-                $name = $row['name'];
-                $gym = $row['gym'];
+                ?>
+                <script>
+                alert("hi");
+                </script>
+                <?php
+                // echo "name" . $index;
+                // //setCookie("name" . $index, $username);
+                // 
+                // <script> 
+                // var cookies = document.cookie.split(';');
+                // alert(cookies);
+                // var splitUsername = cookies[0].split('=');
+                // var username = splitUsername[1];
+                // document.getElementById('searchBox').innerHTML += username + "<br>";
+                // </script> 
+                // <?php
+                // $index += 1;
+                // //setCookie("name", $username, time());
+                // //print "<p>$username</p> <br>";
             }
         }
 }
@@ -103,33 +146,43 @@ function searchOnGym($db, $formData){
     $gymName = $formData['searchTerm'];
         $query = "SELECT username FROM User u 
                     JOIN MemberOf m ON u.uid = m.uid 
-                        WHERE gym_name = '$gymName'";
-        //echo $query;
-        $res = $db->query($query);
-        if($res->rowCount() < 1){
-            echo "No results found";
+                        WHERE gym_name = :gymname";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':gymname', $gymName, PDO::PARAM_STR);
+        $stmt->execute();
+        ?>
+            <div id="searchBox" class="searchBox">
+            <span id="close" class = "closeX" onclick="toggleSearchView('searchBox'); return false;">x</span>
+        <?php
+        if($stmt->rowCount() < 1){
+            print "<p>No results found</p>";
         }
         else{
-            while($row = $res->fetch()){
+            while($row = $stmt->fetch()){
                 $username = $row['username'];
-                echo "<p>$username</p><br>";
+                print "<p>$username</p><br>";
             }
+            ?>
+            </div>
+            <?php
         }
 }
 
 function searchOnLegalName($db, $formData){
-    $name = $formData['searchTerm'];
+    $name = $formData['searchTerm'] . '%';
         $query = "SELECT u.username, u.name, gym_name
                     FROM User AS u
                         JOIN MemberOf AS mo ON u.uid = mo.uid
-                            WHERE u.name LIKE '$name%'";
-        echo $query;
-        $res = $db->query($query);
-        if($res->rowCount() < 1){
+                            WHERE u.name LIKE :name";
+
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+        if($stmt->rowCount() < 1){
             echo "No results found";
         }
         else{
-            while($row = $res->fetch()){
+            while($row = $stmt->fetch()){
                 $username = $row['username'];
                 echo "<p>$username</p><br>";
             }
@@ -169,23 +222,25 @@ function processLogin($db, $formData) {
     $username = $formData['username'];
     $password = $formData['password'];
    
-    $query = "SELECT uid 
-                FROM User   
-                WHERE username='$username' AND password='$password'";
-    
-    echo $query;
-
-    $res = $db->query($query);
-
+    $query = 'SELECT uid FROM User WHERE username = :username AND password = :password';
     
 
-    if ($res == false || $res->rowCount() != 1) {
+    $stmt = $db->prepare($query);
+
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    
+
+    if ($stmt->rowCount() != 1) {
         //header("refresh:2;url=login.php?login");
         print "<P>Login as $username failed</P>\n";    
     }
     else {
         header("refresh:2;url=login.php?login");
-        $row = $res->fetch();
+        $row = $stmt->fetch();
         $_SESSION['uid'] = $row['uid'];
         $_SESSION['uname'] = $username;
         $_SESSION["valid"] = true;
@@ -224,6 +279,23 @@ function checkDuplicateEmail($db, $email):bool {
     }
     return true;
 }
+
+function genExploreToggle() {
+    ?>
+    <button id="exploreBtn" onclick="toggleExplore()">
+        Explore
+    </button>
+    <?php 
+}
+
+function genHomeToggle() {
+    ?>
+    <button id="homeBtn" onclick="toggleHome()">
+        Home
+    </button>
+    <?php 
+}
+
 
 function redirectToHomePage(){}
 
