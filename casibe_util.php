@@ -32,12 +32,14 @@ function genFooter(){
 
 function genPost($db, $pid){
 
-	$str = "SELECT * FROM Post WHERE pid = $pid";
+	$str = "SELECT * FROM Post NATURAL JOIN User WHERE pid = $pid";
 	$row = $db->query($str)->fetch();
 	$caption = $row['caption'];
 	$date = $row['date'];
+	$name = $row['name'];
+	$user = $row['username'];
 	
-	print"<p>$date</p>";
+	print"<p>$date <a href='profile.php?account=$user'> $name <a> </p>";
 	print"<h6>$caption</h6>";
 	
 	
