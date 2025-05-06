@@ -3,7 +3,8 @@
 session_start();
 include_once("../whitco_util.php"); 
 include_once("../casibe_util.php"); 
-include("./bootstrap.php");
+include_once("../db_connect.php");
+include("../bootstrap.php");
 $menu = "notLoggedIn";
 ?>
 
@@ -13,13 +14,12 @@ $menu = "notLoggedIn";
     <title>Login</title>
 </head>
 <body>
-    <?php genHeader(); ?>
  <div class="main-content">
     <h2>Login Here:</h2>
     <?php
     
-    $unam = $_SESSION['uname'];
-    print"<p>$unam</p>";
+    //$unam = $_SESSION['uname'];
+    //print"<p>$unam</p>";
     
     switch($menu){
         case 'notLoggedIn':
