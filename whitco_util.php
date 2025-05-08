@@ -25,8 +25,14 @@ function genLoginForm() {
     <?php
 }
 
+function genLogout(){
+    ?>
+        <li class="nav-item"><a class="nav-link" href="newpost.php">Logout</a></li>
+    <?php
+}
+
 function genHomepagePosts($db){
-    
+    ?><br><?php
     $uid = $_SESSION['uid'];
     
     $query = "SELECT pid
@@ -44,12 +50,13 @@ function genHomepagePosts($db){
         }
     }
     else{
-        echo "<p><style>p {color:white} </style>No Posts!</p>";
+        echo "<p><style>p {color:white; text-align:center;} </style>You have no posts on your following page! To find users with posts, use the explore tab. </p>";
     }
+    ?><br><br><br><?php
 }
 
 function genExplorePage($db){
-    
+    ?><br><?php
     $uid = $_SESSION['uid'];
     
     $query = "SELECT pid
@@ -63,26 +70,29 @@ function genExplorePage($db){
         }
     }
     else{
-        echo "<p><style>p {color:white} </style>No Posts!</p>";
+        echo "<p><style>p {color:white; text-align:center;} </style>You have no posts on your following page! To find users with posts, use the explore tab. </p>";
     }
+    ?><br><br><br><?php
 }
 
 function genSearchBar(){
     ?>
-    <div class='searchBox' id='searchBox'>
-    <span id="close" class = "closeX" onclick="toggleSearchView('searchBox'); return false;">x</span>
+    <div class='searchingArea' id='searchingArea' style="position: absolute; left: 3%;">
+        <form name='userSearch' method='POST' action='homepage.php?search' onsubmit="toggleSearchView('searchBox'); return true;">
+            <label for="searchBy">Search By:</label>
+            <select name="searchBy" id="searchOptions">
+                <option value="Username">Username</option>
+                <option value="Name">Name</option>
+                <option value="Gym">Gym</option>
+            </select>
+            <input type='text' name='searchTerm' id='searchTerm' size='10'/>
+            <input type='submit' value='Search' />
+        </form>
+        <div class='searchBox' id='searchBox' style='display: none; position: absolute; top: 65%; left: 50%; width: 50%; color: black; background: white; border: 1px solid #ccc; z-index: 999; max-height: 200px; overflow-y: auto;'>
+            <span id="close" class='closeX' style='position: absolute; top: 0; left: 5%;' onclick="toggleSearchView('searchBox'); return false;">×</span>
+            <div id='searchResults'></div>
+        </div>
     </div>
-    <FORM name='userSearch' method='POST' action = 'homepage.php'>
-    <label for="searchBy">Search By:</label>
-        <select name="searchBy" id="searchOptions">
-        <option value="Username">Username</option>
-        <option value="Name">Name</option>
-        <option value="Gym">Gym</option>
-        </select>
-        <INPUT type='text' name='searchTerm' id='searchTerm' size = 5 />
-        <?php print "<input type='submit' value='search' onclick='toggleSearchView(\"searchBox\"); return false;'/>"; 
-        ?>
-    </FORM>
     <?php
 }
 
@@ -113,31 +123,20 @@ function searchOnUsername($db, $formData){
         $stmt->execute();
         
         if($stmt->rowCount() < 1){
-            print "<p> No results found </p><br>";
+            ?>
+            <script>document.getElementById('searchBox').innerHTML += "No results found."; </script>
+            <?php
         }
         else{
+            $index = 0;
             while($row = $stmt->fetch()){
-                $index = 0;
                 $username = $row['username'];
-                ?>
+                ?> 
                 <script>
-                alert("hi");
+                    var username = <?php echo json_encode($username); ?>;
+                    document.getElementById('searchBox').innerHTML += "<a href = http://www.cs.gettysburg.edu/~whitco03/cs360/cs360_project/views/profile.php?account=" + username + ">" + username + "</a><br>";
                 </script>
                 <?php
-                // echo "name" . $index;
-                // //setCookie("name" . $index, $username);
-                // 
-                // <script> 
-                // var cookies = document.cookie.split(';');
-                // alert(cookies);
-                // var splitUsername = cookies[0].split('=');
-                // var username = splitUsername[1];
-                // document.getElementById('searchBox').innerHTML += username + "<br>";
-                // </script> 
-                // <?php
-                // $index += 1;
-                // //setCookie("name", $username, time());
-                // //print "<p>$username</p> <br>";
             }
         }
 }
@@ -155,7 +154,9 @@ function searchOnGym($db, $formData){
             <span id="close" class = "closeX" onclick="toggleSearchView('searchBox'); return false;">x</span>
         <?php
         if($stmt->rowCount() < 1){
-            print "<p>No results found</p>";
+            ?>
+            <script>document.getElementById('searchBox').innerHTML += "No results found."; </script>
+            <?php
         }
         else{
             while($row = $stmt->fetch()){
@@ -179,7 +180,9 @@ function searchOnLegalName($db, $formData){
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->execute();
         if($stmt->rowCount() < 1){
-            echo "No results found";
+            ?>
+            <script>document.getElementById('searchBox').innerHTML += "No results found."; </script>
+            <?php
         }
         else{
             while($row = $stmt->fetch()){
@@ -282,17 +285,17 @@ function checkDuplicateEmail($db, $email):bool {
 
 function genExploreToggle() {
     ?>
-    <button id="exploreBtn" onclick="toggleExplore()">
+    <button id="exploreBtn" style="position: absolute; right:5%;" onclick="toggleExplore()">
         Explore
-    </button>
+    </button><br><br>
     <?php 
 }
 
 function genHomeToggle() {
     ?>
-    <button id="homeBtn" onclick="toggleHome()">
-        Home
-    </button>
+    <button id="homeBtn" style="position: absolute; right:5%;" onclick="toggleHome()">
+        Following
+    </button><br><br>
     <?php 
 }
 
