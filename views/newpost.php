@@ -5,7 +5,7 @@ session_start();
 include_once("../iftisa_util.php");
 include_once("../whitco_util.php"); 
 include_once("../casibe_util.php"); 
-include("./bootstrap.php");
+include("../bootstrap.php");
 
 if (!isset($_SESSION["valid"]) || $_SESSION["valid"] !== true) {
     	
@@ -32,6 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     	// Insert Workout and Post using helpers
     	$wid = insertWorkout($db, $uid, $date);
     	insertPost($db, $uid, $wid, $caption, $postTime, $date, $isPrivate);
+        $queryForRID = "SELECT MAX(rid) FROM RepScheme GROUP BY rid";
+        $res = $db->query($queryForRID);
+        insertExercise($db, $wid, $name, $res);
 
     	// Insert RepSchemes
     	for ($i = 1; isset($_POST["exercise$i"]); $i++) {
@@ -49,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             		continue;
         	}
 
-        	insertRepScheme($db, $wid, $exerciseName, $reps, $sets, $weights, $restTime);
+        	insertRepScheme($db, $reps, $sets, $weights, $restTime);
     	}
 
     	header("Location: profile.php");
