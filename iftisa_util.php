@@ -21,6 +21,12 @@ function insertMessage($db, $from_uid, $to_uid, $contents) {
    	 ]);
 }
 
+function insertExercise($db, $wid, $name, $rid){
+    $stmt = $db->prepare("INSERT IGNORE INTO Exercise (wid, name, rid) VALUES (:wid, :name, :rid)");
+    $stmt->execute([':wid' => $wid, ':name' => $name, ':rid' => $rid]);
+    return $db->lastInsertId();
+}
+
 function getMessagesBetweenUsers($db, $uid1, $uid2) {
     	$query = "SELECT * FROM Message
               	WHERE (from_uid = :uid1 AND to_uid = :uid2) OR (from_uid = :uid2 AND to_uid = :uid1)
