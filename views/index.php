@@ -5,65 +5,39 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   	<?php include("./bootstrap.php"); ?>
-	<title>Fuerza</title>
-
+    <?php include("./bootstrap.php"); ?>
+    <title>Fuerza</title>
+    <link rel="stylesheet" href="public-style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md">
-        <div class="container">
-            <a class="navbar-brand" href="#">Fuerza</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.html">Product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mission.html">Mission</a></li>
-                    <li class="nav-item"><a class="nav-link" href="new.html">What's New</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                </ul>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a class="navbar-brand" href="index.php">Fuerza</a>
+            <div class="navbar-links">
+                <a href="home.html">Home</a>
+                <a href="product.html">Product</a>
+                <a href="mission.html">Mission</a>
+                <a href="whatsnew.html">What's New</a>
+                <a href="login.php">Login</a>
             </div>
         </div>
     </nav>
 
-    <div class="main-content">
-        <h2>Connect and Grow</h2>
-        <br>
-        <p>Join your friends and build a community centered around health, fitness and self-improvement.</p>
-        <br>
-        <img class ="main-pic" src="../img/lifting_class.png">
-    </div>
-
-
-    <h5>Features</h5>
-
-        <div class="features">
-            <div class="fcontainer">
-                <div class="gallery">
-                    <img src="../img/spotting.png">                 
-                </div>
-                <div class="gallery">
-                    <img src="../img/measure.png">    
-                </div>
-                <div class="gallery">
-                    <img src="../img/coach.png">
-                </div>
-                <div>Post
-                    <h6>Connect With Friends</h6>
-                    <p>Fuerza allows you to share and track workouts with your favorite people, as well as find others on a similar journey.</p>
-                </div>
-                <div>
-                    <h6>Track Your Progress</h6>
-                    <p>See how you've improved using our analysis features.</p>
-                </div>
-                <div>
-                    <h6>Learn From Others</h6>
-                    <p>Gain unique perspectives on fitness through collaboration and community.</p>
-                </div>
-            </div>
+    <main class="welcome-page">
+        <div class="welcome-container">
+            <h1>WELCOME TO FUERZA!</h1>
+            <p>
+                Discover how Fuerza empowers you to push beyond limits.<br>
+                Dive into our <strong>Product</strong> lineup for smart training tools,<br>
+                explore our <strong>Mission</strong> to see what drives us,<br>
+                and check out <strong>What's New</strong> to stay in the loop.<br>
+                Already a member? <strong>Login</strong> to get started!
+            </p>
         </div>
+    </main>
 
     <footer>
-        <p>© 2025 Fuerza Inc.</p>
+        <p>&copy; 2025 Fuerza Inc.</p>
     </footer>
 </body>
 </html>
