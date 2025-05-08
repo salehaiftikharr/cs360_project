@@ -24,6 +24,7 @@ include_once("../bootstrap.php");
     <body>
         <?php
             genHeader();
+            ?><div class='home-content'><?php
             genSearchBar(); 
             if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['explore'])) {
                     genHomeToggle();
@@ -33,11 +34,18 @@ include_once("../bootstrap.php");
                 genExploreToggle();
                 genHomepagePosts($db); 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    //if($_SERVER["QUERY_STRING"] == 'search'){
-                        processSearch($db, $_POST);
-                    //}
+                    if($_SERVER["QUERY_STRING"] == 'search'){
+                        if($_POST['searchTerm'] == ''){
+                            ?><script>alert('Please enter a search term before searching.');</script><?php
+                        }
+                        else{
+                            processSearch($db, $_POST);
+                            ?><script>document.getElementById('searchBox').style.display = 'block';</script><?php
+                        }
+                    }
                 }    
             }    
+            ?></div><?php
             genFooter();
         ?>
     </body>
