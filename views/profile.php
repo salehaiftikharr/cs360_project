@@ -25,7 +25,7 @@ else{
 
 <title> Profile Page </title>
 <?php
-	include("../bootstrap.php");
+	include("./bootstrap.php");
 	$uid = $_SESSION['uid'];
 	$str = "SELECT uid FROM User WHERE username = '$account'";
 	$pid = $db->query($str)->fetch()['uid']; // PROFILE ID!!!
@@ -66,7 +66,7 @@ else{
 			print"<H6>$username</H6>$bio</div>";
 		
 		
-		if($uid != $pid){
+		if($uid !== $pid){
 			
 			$str = "SELECT * FROM Follows WHERE follower_uid = $uid AND following_uid = $pid";
 			$res = $db->query($str)->fetch();
@@ -84,7 +84,11 @@ else{
 				<?php
 			}
 		}
-		
+		else{
+		?>
+		<p><a href="editprofile.php">Edit Profile</a></p>
+		<?php
+		}
 		
 		genPosts($db, $pid);
 		?>
