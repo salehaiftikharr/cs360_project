@@ -1,0 +1,208 @@
+* {
+	box-sizing: border-box;
+    	margin: 0;
+    	padding: 0;
+}
+
+/* Body */
+body {
+    	font-family: 'Lato', sans-serif;
+    	background-color: black;
+    	color: lightgray;
+    	line-height: 1.6;
+    	padding-bottom: 80px;
+}
+
+/* Navbar */
+.navbar {
+    	background-color: dimgray;
+    	padding: 20px 40px;
+    	display: flex;
+    	justify-content: space-between;
+    	align-items: center;
+}
+
+.navbar-brand {
+	
+    	color: white;
+    	font-size: 24px;
+    	font-weight: bold;
+    	text-decoration: none;
+}
+
+.navbar-links a {
+    	color: white;
+    	margin-left: 20px;
+    	text-decoration: none;
+    	transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+    	color: lightblue;
+}
+
+/* Welcome Page */
+.welcome-page {
+    	display: flex;
+    	justify-content: center;
+    	align-items: center;
+    	min-height: calc(100vh - 140px);
+    	padding: 40px 20px;
+    	text-align: center;
+}
+
+.welcome-container {
+    	max-width: 800px;
+}
+
+.welcome-container h1 {
+    	font-size: 36px;
+    	margin-bottom: 20px;
+    	color: lightblue;
+}
+
+.welcome-container p {
+	
+    	font-size: 18px;
+    	line-height: 1.8;
+    	color: white;
+}
+
+/* Hero Section */
+.hero {
+    	text-align: center;
+    	padding: 80px 20px 60px;
+    	background-color: black;
+    	color: white;
+}
+
+.hero h1 {
+    	font-size: 48px;
+    	margin-bottom: 20px;
+}
+
+.hero .intro-text {
+    	font-size: 18px;
+    	max-width: 600px;
+    	margin: 0 auto 30px;
+}
+
+.cta-button {
+    	background-color: dodgerblue;
+    	color: white;
+    	padding: 12px 24px;
+    	text-decoration: none;
+    	border-radius: 6px;
+    	font-weight: bold;
+    	transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    	background-color: royalblue;
+}
+
+/* Features Section */
+.features {
+    	padding: 60px 40px;
+    	background-color: gray;
+    	color: black;
+}
+
+.features h2 {
+    	font-size: 32px;
+    	margin-bottom: 20px;
+}
+
+.features ul {
+    	list-style-type: none;
+}
+
+.features li {
+    	margin-bottom: 15px;
+    	font-size: 18px;
+}
+
+/* Gallery */
+.gallery {
+    	display: flex;
+    	justify-content: center;
+    	gap: 20px;
+    	padding: 40px;
+    	background-color: black;
+}
+
+.gallery img {
+    	width: 300px;
+    	height: 300px;
+    	object-fit: cover;
+    	border-radius: 10px;
+    	border: 2px solid dimgray;
+}
+
+/* What's New Page */
+.whats-new {
+    	padding: 60px 40px;
+    	max-width: 800px;
+    	margin: 0 auto;
+    	background-color: black;
+}
+
+.whats-new h1 {
+    	font-size: 36px;
+    	margin-bottom: 30px;
+    	color: white;
+}
+
+.whats-new h2 {
+    	font-size: 28px;
+    	color: lightblue;
+    	margin-top: 40px;
+    	margin-bottom: 10px;
+}
+
+.whats-new p,
+.whats-new li {
+    	font-size: 16px;
+    	margin-bottom: 10px;
+    	color: white;
+    	line-height: 1.5;
+}
+
+.whats-new strong {
+    	color: lightcoral;
+}
+
+.whats-new ul {
+    	list-style-type: disc;
+    	margin-left: 20px;
+    	margin-bottom: 20px;
+}
+
+/* Login Page */
+.main-content {
+    	padding: 60px 20px;
+    	color: white;
+}
+
+.main-content h2 {
+    	font-size: 28px;
+    	margin-bottom: 20px;
+}
+
+.main-content input,
+.main-content button {
+    	margin: 10px 0;
+    	padding: 8px;
+}
+
+/* Footer */
+footer {
+    	background-color: black;
+    	color: white;
+    	text-align: center;
+    	padding: 20px 0;
+    	border-top: 1px solid gray;
+    	position: fixed;
+    	bottom: 0;
+    	width: 100%;
+}
