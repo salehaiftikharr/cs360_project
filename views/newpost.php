@@ -33,24 +33,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     	$wid = insertWorkout($db, $uid, $date);
     	insertPost($db, $uid, $wid, $caption, $postTime, $date, $isPrivate);
 
-    	// Insert RepSchemes
-    	for ($i = 1; isset($_POST["exercise$i"]); $i++) {
-        	
-        	$reps = $_POST["reps$i"];
-        	$sets = $_POST["sets$i"];
-        	$weights = $_POST["weights$i"];
-        	$restTime = $_POST["restTime$i"];
-        	$exerciseName = $_POST["exercise$i"];
+    	/// Insert RepSchemes
+for ($i = 1; isset($_POST["exercise$i"]); $i++) {
+    
+    	$reps = $_POST["reps$i"];
+    	$sets = $_POST["sets$i"];
+    	$weights = $_POST["weights$i"];
+    	$restTime = $_POST["restTime$i"];
+    	$exerciseName = $_POST["exercise$i"];
 
-        	if (
-            		$reps === '' || $sets === '' || $weights === '' || $restTime === '' ||
-            		!is_numeric($reps) || !is_numeric($sets) || !is_numeric($weights) || !is_numeric($restTime)
-        	) {
-            		continue;
-        	}
-
-        	insertRepScheme($db, $wid, $exerciseName, $reps, $sets, $weights, $restTime);
+    	if (
+        	$reps === '' || $sets === '' || $weights === '' || $restTime === '' ||
+        	!is_numeric($reps) || !is_numeric($sets) || !is_numeric($weights) || !is_numeric($restTime)
+    	) {
+        	continue;
     	}
+
+    	// Step 1: Insert into RepScheme and get the new rid
+    	$stmt = $db->prepare("INSERT INTO RepScheme (reps, sets, weights, restTime) VALUES (?, ?, ?, ?)");
+    	$stmt->execute([$reps, $sets, $weights, $restTime]);
+    	$rid = $db->lastInsertId();
+
+    	// Step 2: Insert into Exercise using wid, name, and that rid
+    	$stmt2 = $db->prepare("INSERT INTO Exercise (wid, name, rid) VALUES (?, ?, ?)");
+    	$stmt2->execute([$wid, $exerciseName, $rid]);
+}
 
     	header("Location: profile.php");
     	exit;
