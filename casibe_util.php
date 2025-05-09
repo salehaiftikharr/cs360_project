@@ -14,7 +14,6 @@ function genHeader(){
 					<li class="nav-item"><a class="nav-link" href="profile.php">My Profile</a></li>
 					<li class="nav-item"><a class="nav-link" href="messages.php">Messages</a></li>
 					<li class="nav-item"><a class="nav-link" href="newpost.php">New Post</a></li>
-					<li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
 				</ul>
 			</div>
 		</div>
@@ -49,7 +48,6 @@ function genPost($db, $pid){
 
 	$str = "SELECT reps, sets, weights, restTime, Exercise.name FROM RepScheme JOIN Exercise ON RepScheme.rid = Exercise.rid WHERE Exercise.wid = (SELECT Workout.wid FROM Workout JOIN Post ON Workout.wid = Post.wid WHERE pid=$pid)";
 	$res = $db->query($str);
-
 	while($row = $res->fetch()){
 		print"<td class='posttable'>";
 		print"<table>";
